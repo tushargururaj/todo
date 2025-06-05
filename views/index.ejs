@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>To-Do List</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="./styles/styles.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Oswald:wght@200..700&family=Sen:wght@400..800&display=swap" rel="stylesheet">
+  <style>
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="head">
+      <h1>To-Do List</h1>
+    </div>
+    <div class="content">
+    <div class="add-items">
+      <form class="add form-1" method="POST" action="/add">
+        <input type="text" id="task_input" name="task" placeholder="Add a new task..." />
+        <button type="submit">
+          <img src="./images/add-svgrepo-com.svg" alt="Add Task">
+        </button>
+      </form>
+    </div>
+    <div class="items-container">
+      <ul id="items">
+        <% if (locals.data && locals.data.length > 0) { %>
+          <% locals.data.forEach(element => { %>
+            <li>
+              <form action="/toggle/<%= element.id %>" method="POST" style="display: inline;">
+                <button type="submit" class="check-box <%= element.completed ? 'C-active' : '' %>" aria-label="Toggle Complete"></button>
+              </form>
+
+              <% if (element.editing) { %>
+                <form action="/edited/<%= element.id %>" method="POST" style="display: inline;">
+                  <input type="text" class="edit-input" name="task" value="<%= element.tasks %>">
+                  <button class="edit-btn">
+                    <img src="./images/edit-3-svgrepo-com.svg" alt="Save">
+                  </button>
+                </form>
+              <% } else { %>
+                <p data-id="<%= element.id %>" class="<%= element.completed ? 'strike' : '' %>"><%= element.tasks %></p>
+                <form action="/edit/<%= element.id %>" method="POST" style="display: inline;">
+                  <button class="edit-btn">
+                    <img src="./images/edit-3-svgrepo-com.svg" alt="Edit">
+                  </button>
+                </form>
+              <% } %>
+
+              <form action="/delete/<%= element.id %>" method="POST" class="delete-form">
+                <button type="submit" class="delete">
+                  <img src="./images/recycle-bin-garbage-recycle-delete-svgrepo-com.svg" alt="Delete">
+                </button>
+              </form>
+            </li>
+          <% }) %>
+        <% } else { %>
+          <p class="ntg">No tasks remaining!</p>
+        <% } %>
+
+      </ul>
+    </div>
+    </div>
+  </div>
+</body>
+<script type="module" src="index.js"></script>
+</html>
