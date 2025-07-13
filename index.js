@@ -12,7 +12,7 @@ const db = new pg.Client({
   port: 5432,
 });
 db.connect();
-
+// fuck yourself 
 const app = express();
 const port = 3000;
 
